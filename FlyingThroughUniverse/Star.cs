@@ -8,20 +8,14 @@ namespace FlyingThroughUniverse
         public double Y { get; set; }
         public double Distance { get; set; }
         public double Speed { get; set; }
-        private Random RandomGenerator { get; set; }
-        private int MaxCanvasWidth { get; set; }
-        private int MaxCanvasHeight { get; set; }
-        private double CanvasCenterX { get; set; }
-        private double CanvasCenterY { get; set; }
 
-        public Star(int maxCanvasWidth, int maxCanvasHeight, Random randomSeed)
+        private Random RandomGenerator { get; set; }
+        private Canvas Canvas { get; set; }
+
+        public Star(Canvas canvas, Random randomSeed)
         {
             RandomGenerator = randomSeed;
-            MaxCanvasWidth = maxCanvasWidth;
-            MaxCanvasHeight = maxCanvasHeight;
-            CanvasCenterX = (double)MaxCanvasWidth / 2;
-            CanvasCenterY = (double)MaxCanvasHeight / 2;
-
+            Canvas = canvas;
             PositionRandomlyStarOnCanvas();
             Distance = 0;
             Speed = 0.025;
@@ -32,14 +26,14 @@ namespace FlyingThroughUniverse
             Distance += 0.1;
 
             //determine in which direction the star should be moving on the x axis
-            var xcalc = (Math.Abs(CanvasCenterX - X) * Speed) * (Distance * 0.2);
-            X += (X > CanvasCenterX ? 1 : -1) * xcalc;
+            var xcalc = (Math.Abs(Canvas.CenterX - X) * Speed) * (Distance * 0.2);
+            X += (X > Canvas.CenterX ? 1 : -1) * xcalc;
 
             //determine in which direction the star should be moving on the y axis
-            var ycalc = (Math.Abs(CanvasCenterY - Y) * Speed) * (Distance * 0.2);
-            Y += (Y > CanvasCenterY ? 1 : -1) * ycalc;
+            var ycalc = (Math.Abs(Canvas.CenterY - Y) * Speed) * (Distance * 0.2);
+            Y += (Y > Canvas.CenterY ? 1 : -1) * ycalc;
 
-            //see if the star has left the edge of the screen
+            //see if the star has left the edge of the canvas
             if (IsOutOfCanvas()) RepositionStarOnCanvas();
         }
         public void RepositionStarOnCanvas()
@@ -50,7 +44,7 @@ namespace FlyingThroughUniverse
 
         public bool IsOutOfCanvas()
         {
-            return X > MaxCanvasWidth || X < 0 || Y > MaxCanvasHeight || Y < 0;
+            return X > Canvas.MaxWidth || X < 0 || Y > Canvas.MaxHeight || Y < 0;
         }
 
         private void PositionRandomlyStarOnCanvas()
@@ -58,9 +52,9 @@ namespace FlyingThroughUniverse
             //makes sure that the star is not in the exact center of the canvas
             do
             {
-                X = RandomGenerator.Next(0, MaxCanvasWidth);
-                Y = RandomGenerator.Next(0, MaxCanvasHeight);
-            } while (Math.Abs(X - CanvasCenterX) < 0.1 && Math.Abs(Y - CanvasCenterY) < 0.1);
+                X = RandomGenerator.Next(0, Canvas.MaxWidth);
+                Y = RandomGenerator.Next(0, Canvas.MaxHeight);
+            } while (Math.Abs(X - Canvas.CenterX) < 0.1 && Math.Abs(Y - Canvas.CenterY) < 0.1);
         }
     }
 }
