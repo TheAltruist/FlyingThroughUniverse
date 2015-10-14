@@ -48,6 +48,7 @@
             this.Text = "Space";
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.FrmMain_MouseDoubleClick);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.FrmMain_MouseMove);
             this.ResumeLayout(false);
 
         }

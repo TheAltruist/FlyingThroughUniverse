@@ -8,6 +8,7 @@ namespace FlyingThroughUniverse
 {
     public partial class FrmMain : Form
     {
+        protected Canvas CanvasSurface { get; set; }
         protected List<Star> Stars { get; set; }
         
         public FrmMain()
@@ -21,6 +22,7 @@ namespace FlyingThroughUniverse
             BackColor = Color.Black;
             ForeColor = Color.White;
 
+            CanvasSurface = new Canvas(Width, Height);
             Stars = new List<Star>();
             CreateStars();
             TmrTime.Interval = 10;
@@ -51,10 +53,10 @@ namespace FlyingThroughUniverse
         {
             const int totalStars = 100;
             var randomSeed = new Random();
-            var canvas = new Canvas(Width, Height);
+            
             for (var i = 0; i < totalStars; i++)
             {
-                Stars.Add(new Star(canvas, randomSeed));
+                Stars.Add(new Star(CanvasSurface, randomSeed));
             }
         }
 
@@ -62,6 +64,12 @@ namespace FlyingThroughUniverse
         {
             TmrTime.Stop();
             Environment.Exit(0);
+        }
+
+        private void FrmMain_MouseMove(object sender, MouseEventArgs e)
+        {
+            CanvasSurface.CenterX = e.X;
+            CanvasSurface.CenterY = e.Y;
         }
     }
 }
