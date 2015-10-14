@@ -18,7 +18,7 @@ namespace FlyingThroughUniverse
             Canvas = canvas;
             PositionRandomlyStarOnCanvas();
             Distance = 0;
-            Speed = 0.025;
+            Speed = (double) randomSeed.Next(11, 99) / 1000;//Speed = 0.025;
         }
 
         public void Move()

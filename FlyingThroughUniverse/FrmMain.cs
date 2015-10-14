@@ -51,9 +51,10 @@ namespace FlyingThroughUniverse
         {
             const int totalStars = 100;
             var randomSeed = new Random();
+            var canvas = new Canvas(Width, Height);
             for (var i = 0; i < totalStars; i++)
             {
-                Stars.Add(new Star(new Canvas(Width, Height), randomSeed));
+                Stars.Add(new Star(canvas, randomSeed));
             }
         }
 
