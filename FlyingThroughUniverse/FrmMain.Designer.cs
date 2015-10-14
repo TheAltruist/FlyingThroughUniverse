@@ -28,14 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.TmrTime = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
-            // 
-            // TmrTime
-            // 
-            this.TmrTime.Interval = 10;
-            this.TmrTime.Tick += new System.EventHandler(this.TmrTime_Tick);
             // 
             // FrmMain
             // 
@@ -55,7 +48,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Timer TmrTime;
     }
 }
 

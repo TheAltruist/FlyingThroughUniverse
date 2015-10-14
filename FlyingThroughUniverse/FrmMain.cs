@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 //using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -25,23 +28,24 @@ namespace FlyingThroughUniverse
             CanvasSurface = new Canvas(Width, Height);
             Stars = new List<Star>();
             CreateStars();
-            TmrTime.Interval = 10;
-            TmrTime.Enabled = true;
-            TmrTime.Start();
+            Travel();
         }
 
-        
-        private void TmrTime_Tick(object sender, EventArgs e)
+        private void Travel()
         {
-            foreach (var star in Stars)
+            var q = from star in Stars select star;
+            var obs = q.ToObservable(Scheduler.Default);
+            obs.ObserveOn(Scheduler.CurrentThread).Subscribe(star =>
             {
                 Circle(Color.Black, star.X, star.Y, star.Distance);
-
                 star.Move();
-
                 Circle(Color.White, star.X, star.Y, star.Distance);
-            }
-            
+            }, Travel);
+        }
+
+        private IEnumerable<Star> GetStars()
+        {
+            return Stars;
         }
 
         private void Circle(Color color, double x, double y, double diameter)
@@ -62,7 +66,6 @@ namespace FlyingThroughUniverse
 
         private void FrmMain_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            TmrTime.Stop();
             Environment.Exit(0);
         }
 
