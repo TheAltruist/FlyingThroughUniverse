@@ -33,13 +33,13 @@ namespace FlyingThroughUniverse
 
         private void Travel()
         {
-            var observableStars = Stars.Select(star => star).ToObservable(Scheduler.Default);
+            var observableStars = Stars.ToObservable(Scheduler.Default).Repeat();
             observableStars.ObserveOn(Scheduler.CurrentThread).Subscribe(star =>
             {
                 Circle(Color.Black, star.X, star.Y, star.Distance);
                 star.Move();
                 Circle(Color.White, star.X, star.Y, star.Distance);
-            }, Travel);
+            });
         }
 
         private void Circle(Color color, double x, double y, double diameter)
